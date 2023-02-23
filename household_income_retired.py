@@ -87,8 +87,11 @@ pc_households.index = pc_households.index/10
 
 f_pcInd_to_pcHouse = interp1d(np.asarray(pc_households.index), np.asarray(pc_households))
 
-#print(pc_households)
-print(tot_households)
+# number of individuals
+n_individuals = pd.read_excel(filename, 'n_individuals', header=0).squeeze("columns")
+tot_individuals = n_individuals.sum()
+tot_individuals *= 1000
+print(tot_individuals)
 
 #Now percentage of a given household composition
 
@@ -208,6 +211,7 @@ save_dict = {'f_HEDI_to_pcInd': f_HEDI_to_pcInd,
             'f_pcInd_to_HEDI' : f_pcInd_to_HEDI,
             'l_deciles_av' : l_deciles_av,
             'tot_households': tot_households,
+            'tot_individuals': tot_individuals,
             'f_pcInd_to_pcHouse' : f_pcInd_to_pcHouse,
             'f_pcInd_to_pcHouse_byComp': f_pcInd_to_pcHouse_byComp,
             'd_household_comps_to_index': d_household_comps_to_index,
