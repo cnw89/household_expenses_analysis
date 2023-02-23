@@ -32,7 +32,7 @@ from scipy.interpolate import interp1d
 
 import pickle
 
-INDIR = r'./'
+INDIR = r'./ons-income-2022/'
 filename = INDIR + 'hdi_composition_nonretired.xlsx'
 
 
@@ -48,9 +48,17 @@ deciles20.loc[0] = 2*deciles20.loc[0.5] - deciles20.loc[1]
 deciles20.loc[10] = 2*deciles20.loc[9.5] - deciles20.loc[9]
 deciles20.index = deciles20.index/10
 
+interp_HEDI = np.asarray(deciles20)
+interp_pcInd = np.asarray(deciles20.index)
+#add some extremes so we don't get errors...
+interp_HEDI = np.insert(interp_HEDI, 0, 0)
+interp_pcInd = np.insert(interp_pcInd, 0, -1)
+interp_HEDI = np.append(interp_HEDI, 1e12)
+interp_pcInd = np.append(interp_pcInd, 1.1)
+
 #This gives us Household equivalized dispoable income to percentile INDIVIDUAL (and vice versa)
-f_HEDI_to_pcInd = interp1d(np.asarray(deciles20), np.asarray(deciles20.index))
-f_pcInd_to_HEDI = interp1d(np.asarray(deciles20.index), np.asarray(deciles20))
+f_HEDI_to_pcInd = interp1d(interp_HEDI, interp_pcInd)
+f_pcInd_to_HEDI = interp1d(interp_pcInd, interp_HEDI)
 
 #repeat for decile averages only
 sheetname = 'deciles_av'
